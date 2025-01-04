@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,33 +32,33 @@ public class ImpEtudiantService implements IEtudaintService{
         return etudiantRepository.findAllEtudiantDto();
     }
 
-    public void  addEtudiant(EtudiantDTO etudiantDTO) {
+    public void  addEtudiant(EtudiantDtoReponse etudiantDTO) {
         Etudiant etudiant = new Etudiant();
         etudiant.setNom(etudiantDTO.getNom());
         etudiant.setPrenom(etudiantDTO.getPrenom());
         etudiant.setCIN(etudiantDTO.getCin());
         etudiant.setCNE(etudiantDTO.getCne());
 
-        Filiere filiere = filiereRepository.findById(Long.parseLong(etudiantDTO.getFiliere()))
-                .orElseThrow(() -> new RuntimeException("Filiere not found"));
+        Filiere filiere = filiereRepository.findByNomFiliere(etudiantDTO.getFiliere());
         etudiant.setFiliere(filiere);
-        Promo promo=promoRepository.findByNamePromo(etudiantDTO.getPromo());
-        Semestre S1 =semestreRepository.findSemestreByPromoAndName(etudiantDTO.getSemestre(),promo.getIdPromo());
 
-        SemestreEtudiant SE=new SemestreEtudiant();
-        SE.setEtudiant(etudiant);
-        SE.setSemestre(S1);
-        SE.setStatus("en cours");
+        Semestre S=semestreRepository.findByNomAndAnnee(etudiantDTO.getSemestre(),etudiantDTO.getAnnees()).orElseThrow(() -> new RuntimeException("Semestre non trouvé"));;
 
-        etudiantSemestreRepository.save(SE);
+            Etudiant savedEtudiant = etudiantRepository.save(etudiant);
+            SemestreEtudiant SE=new SemestreEtudiant();
+            SE.setEtudiant(savedEtudiant);
+            SE.setSemestre(S);
+            SE.setStatus("en cours");
+
+            etudiantSemestreRepository.save(SE);
 
 
-        Etudiant savedEtudiant = etudiantRepository.save(etudiant);
+
 
     }
 
-    public void deleteEtudiant(Long id) {
-        etudiantRepository.deleteById(id);
+    public void deleteEtudiant(String cin) {
+        etudiantRepository.deleteEtudiandByCIN(cin);
     }
 
 

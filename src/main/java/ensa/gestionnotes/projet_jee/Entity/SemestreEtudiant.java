@@ -1,9 +1,7 @@
 package ensa.gestionnotes.projet_jee.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +10,14 @@ import java.io.Serializable;
 @Entity   @NoArgsConstructor @AllArgsConstructor
 public class SemestreEtudiant  implements Serializable {
     @Id
-     private String id;
-     private String Status; // encour /valide /non valide
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private long id;
+     private String Status;// encour /valide /non valide
+
      @ManyToOne
      @JoinColumn(name = "Id_etudiant", referencedColumnName = "CodeEtudiant")
      private Etudiant etudiant;
+
 
     @ManyToOne
     @JoinColumn(name = "Id_semestre", referencedColumnName = "id_semestre")
@@ -26,7 +27,7 @@ public class SemestreEtudiant  implements Serializable {
         Status = status;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

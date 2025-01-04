@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ISemestreService {
     public List<Semestre> findByPromoId(long promoId);
+    List<String> getDistinctSemestres();
+    List<String> getDistinctAnnees();
 }

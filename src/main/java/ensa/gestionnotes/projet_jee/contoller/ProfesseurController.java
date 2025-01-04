@@ -10,5 +10,6 @@ public class ProfesseurController {
     @GetMapping("/dashboard")
     public String professeurDashboard() {
         return "Bienvenue dans le tableau de bord professeur";
+        
     }
 }

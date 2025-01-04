@@ -1,5 +1,6 @@
 package ensa.gestionnotes.projet_jee.Entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

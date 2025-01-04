@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IEtudaintService {
     public List<EtudiantDtoReponse> getAllEtudiants();
-    public  void  addEtudiant(EtudiantDTO etudiantDTO);
-    public void deleteEtudiant(Long id);
+    public  void  addEtudiant(EtudiantDtoReponse etudiantDTO);
+    public void deleteEtudiant(String cin);
 
 }

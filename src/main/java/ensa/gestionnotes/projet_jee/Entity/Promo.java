@@ -1,5 +1,6 @@
 package ensa.gestionnotes.projet_jee.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class Promo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idPromo;
     private String namePromo;
+
     @OneToMany(mappedBy ="promo" ,cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Semestre> semestres;
 

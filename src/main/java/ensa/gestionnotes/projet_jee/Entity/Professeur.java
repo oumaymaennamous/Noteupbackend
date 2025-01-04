@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name ="Professeur")
-@NoArgsConstructor
 @AllArgsConstructor
 
 public class Professeur  implements Serializable {
@@ -76,5 +75,8 @@ public class Professeur  implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public Professeur() {
     }
 }

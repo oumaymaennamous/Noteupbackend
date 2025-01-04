@@ -1,5 +1,6 @@
 package ensa.gestionnotes.projet_jee.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class Semestre implements Serializable {
     private String annee;
     @OneToMany(mappedBy ="semestre" ,cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     private List<SemestreEtudiant> etudiants;
+
     @ManyToOne
     @JoinColumn(name = "Id_promo", referencedColumnName = "idPromo")
     private Promo promo;

@@ -12,13 +12,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
-    @Query("SELECT e FROM Etudiant e " +
+    @Query("SELECT new ensa.gestionnotes.projet_jee.dto.EtudiantDtoReponse(e.nom, e.prenom, e.CIN, e.CNE,m.filiere.NomFiliere,s.semestre, s.annee)"
+            +"FROM Etudiant e " +
             "JOIN SemestreEtudiant se ON e.CodeEtudiant = se.etudiant.CodeEtudiant " +
             "JOIN Semestre s ON s.id_semestre = se.semestre.id_semestre " +
             "JOIN Module m ON m.semestre.id_semestre = s.id_semestre " +
             "JOIN Element_Module em ON em.module.CodeModule=m.CodeModule " +
-            "WHERE em.codeElementModule = :codeElementModule and e.filiere.CodeFiliere=m.filiere.CodeFiliere ")
-    List<Etudiant> findEtudiantsByElementModule(@Param("codeElementModule") Long codeElementModule);
+            "WHERE em.codeElementModule = :codeElementModule")
+    List<EtudiantDtoReponse> findEtudiantsByElementModule(@Param("codeElementModule") Long codeElementModule);
 
 
     @Query("SELECT e, ev " +

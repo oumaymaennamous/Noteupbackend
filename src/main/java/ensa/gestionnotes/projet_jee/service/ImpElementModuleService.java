@@ -1,15 +1,12 @@
 package ensa.gestionnotes.projet_jee.service;
 
-import ensa.gestionnotes.projet_jee.Entity.Element_Module;
-import ensa.gestionnotes.projet_jee.Entity.Mode_Evaluation;
+import ensa.gestionnotes.projet_jee.Entity.*;
 import ensa.gestionnotes.projet_jee.Entity.Module;
-import ensa.gestionnotes.projet_jee.Entity.Professeur;
+import ensa.gestionnotes.projet_jee.dto.ElementDTO;
 import ensa.gestionnotes.projet_jee.dto.ElementModuleDTO;
+import ensa.gestionnotes.projet_jee.dto.EtudiantDtoReponse;
 import ensa.gestionnotes.projet_jee.dto.ModeEvaluationDTO;
-import ensa.gestionnotes.projet_jee.repository.ElementModuleRepository;
-import ensa.gestionnotes.projet_jee.repository.ModeEvaluationRepository;
-import ensa.gestionnotes.projet_jee.repository.ModuleRepository;
-import ensa.gestionnotes.projet_jee.repository.ProfesseurRepository;
+import ensa.gestionnotes.projet_jee.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +23,8 @@ public class ImpElementModuleService implements IElementModuleService{
     private  ProfesseurRepository professeurRepository;
     @Autowired
     private  ModeEvaluationRepository modeEvaluationRepository;
+    @Autowired
+    private EtudiantRepository etudiantRepository;
     @Override
     public List<ElementModuleDTO> getElementsByModuleId(Long moduleId) {
         return elementModuleRepository.findByModuleCodeModule(moduleId)
@@ -112,11 +111,34 @@ public class ImpElementModuleService implements IElementModuleService{
     }
 
     @Override
-    public List<ElementModuleDTO> getElementModulesByProfessor(String cin) {
+    public List<ElementDTO> getElementModulesByProfessor(String cin) {
         return elementModuleRepository.findElementByProfesseeur(cin)
                 .stream()
-                .map(this::convertToDTO)
+                .map(this::convertToElementDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EtudiantDtoReponse> getEtudiantsByElement(Long elementId) {
+        return etudiantRepository.findEtudiantsByElementModule(elementId);
+    }
+
+
+    public ElementDTO convertToElementDTO(Element_Module element) {
+        ElementDTO dto = new ElementDTO();
+        dto.setCodeElementModule(element.getCodeElementModule());
+        dto.setNameElementModule(element.getNameElementModule());
+        dto.setCoefficient(element.getCoefficient());
+        dto.setActive(element.isActive());
+        dto.setModuleName(element.getModule().getNameModule());
+        dto.setCodeModule(element.getModule().getCodeModule());
+        if(element.getModeEvaluations() != null){
+            dto.setEvaluationModes(element.getModeEvaluations().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 
 }
